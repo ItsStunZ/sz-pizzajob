@@ -92,29 +92,6 @@ exports['qb-target']:AddBoxZone('sz-pizzajob:bossmenu', vector3(794.97, -767.02,
     distance = 1,
 })
 
--- Make Fries
-exports['qb-target']:AddBoxZone('sz-pizzajob:makefries', vector3(808.35, -761.21, 26.78), 0.6, 0.7, {
-    name = 'sz-pizzajob:makefries',
-    heading = 0,
-    debugPoly = Config.Debug,
-    minZ = 0.6,
-    maxZ = 0.7,
-}, {
-    options = {
-        {
-            num = 1,
-            type = 'client',
-            event = 'sz-pizzajob:client:friesmenu',
-            icon = 'fas fa-utensils',
-            label = 'Make Fries',
-            job = 'pizzathis',
-            drawColor = {255, 255, 255, 255},
-            successDrawColor = {30, 144, 255, 255},
-        }
-    },
-    distance = 1,
-})
-
 -- Fridge
 exports['qb-target']:AddBoxZone('sz-pizzajob:openfridge', vector3(805.93, -761.68, 26.78), 1.4, 0.2, {
     name = 'sz-pizzajob:openfridge',
