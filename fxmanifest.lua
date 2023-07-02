@@ -2,7 +2,7 @@ fx_version 'cerulean'
 game 'gta5'
 
 author 'StunZ'
-description 'Created for DreamLand RP'
+description 'Simple Pizza job scripts for QBCore'
 version = '0.0.1'
 
 client_scripts {
