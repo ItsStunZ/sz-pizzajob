@@ -495,6 +495,28 @@ exports['qb-target']:AddBoxZone('sz-pizzajob:storage', vector3(802.74, -757.04, 
     distance = 1.3
 })
 
+-- Outfits
+exports['qb-target']:AddBoxZone('sz-pizzajob:outfits', vector3(812.83, -762.73, 31.27), 0.8, 2.0, {
+    name = 'sz-pizzajob:outfits',
+    heading = 0,
+    debugPoly = Config.Debug,
+    minZ = 30.27,
+    maxZ = 32.27,
+}, {
+    options = {
+        {
+            type = 'client',
+            event = 'qb-clothing:client:openOutfitMenu',
+            icon = 'fas fa-shirt',
+            label = 'Outfits',
+            job = 'pizzathis',
+            drawColor = {255, 255, 255, 255},
+            successDrawColor = {30, 144, 255, 255},
+        }
+    },
+    distance = 2
+})
+
 -- Events
 -- Make Dough
 RegisterNetEvent('sz-pizzajob:client:makedough', function()
