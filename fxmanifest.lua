@@ -3,7 +3,7 @@ game 'gta5'
 
 author 'StunZ'
 description 'Simple Pizza job scripts for QBCore'
-version = '0.0.1'
+version = '0.0.3'
 
 client_scripts {
     'client/client.lua'
