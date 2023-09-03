@@ -67,6 +67,45 @@ Add this to qb-core/shared/items.lua
 ["slicedjalapenos"]=        {["name"] = "slicedjalapenos",		["label"] = "Sliced Jalapenos",	["weight"] = 1000, ["type"] = "item",  ["image"] = "slicedjalapenos.png",      ["unique"] = false,  ["useable"] = false, ["shouldClose"] = false, ["description"] = "Sliced Jalapenos"},
 ```
 
+```
+Add this to you [qb]/qb-core/shared/jobs
+
+    ['pizzathis'] = {
+		label = 'PizzaThis',
+		defaultDuty = false,
+		offDutyPay = false,
+		grades = {
+            ['0'] = {
+                name = 'Trainee',
+                payment = 50
+            },
+			['1'] = {
+                name = 'Junior Pizza Maker',
+                payment = 75
+            },
+			['2'] = {
+                name = 'Senior Pizza Maker',
+                payment = 100
+            },
+			['3'] = {
+                name = 'Shift Supervisor',
+                payment = 125
+            },
+			['4'] = {
+                name = 'Assistant Manager',
+				isboss = true,
+                payment = 150
+            },
+            ['5'] = {
+                name = 'Owner',
+				isboss = true,
+                payment = 200
+            },
+        },
+	},
+    
+```
+
 Make sure all dependencies are installed otherwise this script will not run
 
 # Credit
