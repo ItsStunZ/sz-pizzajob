@@ -67,9 +67,9 @@ Add this to qb-core/shared/items.lua
 ["slicedjalapenos"]=        {["name"] = "slicedjalapenos",		["label"] = "Sliced Jalapenos",	["weight"] = 1000, ["type"] = "item",  ["image"] = "slicedjalapenos.png",      ["unique"] = false,  ["useable"] = false, ["shouldClose"] = false, ["description"] = "Sliced Jalapenos"},
 ```
 
-```
 Add this to you [qb]/qb-core/shared/jobs
 
+```
     ['pizzathis'] = {
 		label = 'PizzaThis',
 		defaultDuty = false,
@@ -103,7 +103,6 @@ Add this to you [qb]/qb-core/shared/jobs
             },
         },
 	},
-    
 ```
 
 Make sure all dependencies are installed otherwise this script will not run
