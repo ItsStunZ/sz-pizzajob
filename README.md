@@ -71,10 +71,10 @@ Add this to you [qb]/qb-core/shared/jobs
 
 ```
     ['pizzathis'] = {
-		label = 'PizzaThis',
-		defaultDuty = false,
-		offDutyPay = false,
-		grades = {
+	label = 'PizzaThis',
+	defaultDuty = false,
+	offDutyPay = false,
+	grades = {
             ['0'] = {
                 name = 'Trainee',
                 payment = 50
@@ -102,7 +102,7 @@ Add this to you [qb]/qb-core/shared/jobs
                 payment = 200
             },
         },
-	},
+    },
 ```
 
 Make sure all dependencies are installed otherwise this script will not run
