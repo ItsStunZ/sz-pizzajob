@@ -5,6 +5,8 @@ Config.Debug = false
 Config.MixerWaitTime = 30 -- How long it takes till the mixer has finished mixing -- Time in seconds 
 Config.OvenWaitTime = 40 -- How long it takes till the oven has finished cooking -- Time in seconds
 
+Config.Payment = 'qb' -- If your using jim-payments then change this to 'jim'
+
 Config.FridgeItems = {
     label = 'Fridge',
     slots = 20,

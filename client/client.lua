@@ -22,28 +22,41 @@ BeginTextCommandSetBlipName('STRING')
 AddTextComponentString('PizzaThis')
 EndTextCommandSetBlipName(blip)
 
-function QBCore.Functions.Progressbar(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel) --not sure what this is here for unless youre trying to create a global progressbar
-    exports['progressbar']:Progress({
-        name = label:lower(),
-        duration = duration,
-        label = label,
-        useWhileDead = useWhileDead,
-        canCancel = canCancel,
-        controlDisables = disableControls,
-        animation = animation,
-        prop = prop,
-        propTwo = propTwo,
-    }, function(cancelled)
-        if not cancelled then
-            if onFinish then
-                onFinish()
-            end
-        else
-            if onCancel then
-                onCancel()
-            end
-        end
-    end)
+local function paymentMenu()
+    local dialog = exports['qb-input']:ShowInput({
+        header = 'Create Reciept',
+        submitText = 'Submit',
+        inputs = {
+            {
+                text = 'ID',
+                name = 'id',
+                type = 'number',
+                isRequire = true,
+            },
+            {
+                text = 'Amount',
+                name = 'amount',
+                type = 'number',
+            },
+            {
+                text = 'Bill Type',
+                name = 'billtype',
+                type = 'radio',
+                options = {
+                    { value = 'cash', text = 'Cash' },
+                    { value = 'bank', text = 'Bank' }
+                },
+            },
+        },
+    })
+
+    if dialog ~= nil then
+        TriggerServerEvent('sz-pizzajob:server:payment', {
+            id = tonumber(dialog.id),
+            amount = tonumber(dialog.amount),
+            billtype = dialog.billtype
+        })
+    end
 end
 
 -- Targets
@@ -403,9 +416,21 @@ exports['qb-target']:AddBoxZone('sz-pizzajob:till1', vector3(811.3, -751.99, 26.
 }, {
     options = {
         {
-            event = 'jim-payments:client:Charge',
             icon = 'fas fa-credit-card',
             label = 'Charge Customer',
+            action = function()
+                local Player = QBCore.Functions.GetPlayerData()
+                local jobDuty = Player.job.onduty
+                if not jobDuty then
+                    QBCore.Functions.Notify('You are not clocked in!', 'error', 3000)
+                    return
+                end
+                if Config.Payment == 'jim' then
+                    TriggerEvent('jim-payments:client:Charge')
+                elseif Config.Payment == 'qb' then
+                    paymentMenu()
+                end 
+            end,
             job = 'pizzathis',
             img = nil,
             drawColor = {255, 255, 255, 255},
@@ -425,9 +450,21 @@ exports['qb-target']:AddBoxZone('sz-pizzajob:till2', vector3(811.29, -750.66, 26
 }, {
     options = {
         {
-            event = 'jim-payments:client:Charge',
             icon = 'fas fa-credit-card',
             label = 'Charge Customer',
+            action = function()
+                local Player = QBCore.Functions.GetPlayerData()
+                local jobDuty = Player.job.onduty
+                if not jobDuty then
+                    QBCore.Functions.Notify('You are not clocked in!', 'error', 3000)
+                    return
+                end
+                if Config.Payment == 'jim' then
+                    TriggerEvent('jim-payments:client:Charge')
+                elseif Config.Payment == 'qb' then
+                    paymentMenu()
+                end 
+            end,
             job = 'pizzathis',
             img = nil,
             drawColor = {255, 255, 255, 255},
@@ -985,4 +1022,38 @@ RegisterNetEvent('sz-pizzajob:client:boxpizza', function(args)
     end, function ()
         TriggerEvent('animations:client:EmoteCommandStart', {"c"})
     end)
+end)
+
+RegisterNetEvent('sz-pizzajob:client:confirmationRecipt', function(data)
+    local dialog = exports['qb-input']:ShowInput({
+        header = 'Confirmation Recipt',
+        submitText = 'Confirm',
+        inputs = {
+            {
+                text = 'Confirmation Recipt For $' .. data.amount,
+                name = 'confirmation',
+                type = 'radio',
+                options = {
+                    { value = 'confirm', text = 'Confirm' },
+                    { value = 'deny', text = 'Deny' }
+                }
+            }
+        },
+    })
+
+    if dialog ~= nil then
+        for k, v in pairs(dialog) do
+            if v == 'confirm' then
+                TriggerServerEvent('sz-pizzajob:server:removeMoney', {
+                    amount = data.amount,
+                    billtype = data.billtype
+                })
+                TriggerServerEvent('sz-pizzajob:server:notify', { src = data.employeeSource, text = 'Payment Accepted!', type = 'success', length =  5000 })
+                return
+            elseif v == 'deny' then
+                TriggerServerEvent('sz-pizzajob:server:notify',  { src = data.employeeSource, text = 'Payment Denied!', type = 'error', length = 5000 })
+                return
+            end
+        end
+    end
 end)

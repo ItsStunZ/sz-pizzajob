@@ -65,6 +65,42 @@ RegisterNetEvent('sz-pizzajob:server:removeeatitem', function(item, amount)
     TriggerClientEvent('inventory:client:ItemBox', src, QBCore.Shared.Items[item], 'remove', amount)
 end)
 
+RegisterNetEvent('sz-pizzajob:server:payment', function(data)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    local otherPlayer = QBCore.Functions.GetPlayer(data.id)
+    if Player and otherPlayer then
+        local distance = 5
+        if #(GetEntityCoords(GetPlayerPed(src)) - GetEntityCoords(GetPlayerPed(data.id))) <= distance then
+            if data.amount > 0 then
+                if otherPlayer.PlayerData.money[data.billtype] >= data.amount then
+                    TriggerClientEvent('sz-pizzajob:client:confirmationRecipt', QBCore.Functions.GetSource(otherPlayer.PlayerData.license), { 
+                        amount = data.amount,
+                        billtype = data.billtype,
+                        employeeSource = QBCore.Functions.GetSource(Player.PlayerData.license)
+                    })
+                else
+                    if data.billtype == 'bank' then
+                        QBCore.Functions.Notify(QBCore.Functions.GetSource(Player.PlayerData.license), 'Person does not have enough money in their bank', 'error', 5000)
+                    elseif data.billtype == 'cash' then
+                        QBCore.Functions.Notify(QBCore.Functions.GetSource(Player.PlayerData.license), 'Person does not have enough cash on them', 'error', 5000)
+                    end
+                end
+            end
+        end
+    end
+end)
+
+RegisterNetEvent('sz-pizzajob:server:removeMoney', function(data)
+    local src = source
+    local Player = QBCore.Functions.GetPlayer(src)
+    Player.Functions.RemoveMoney(data.billtype, data.amount)
+end)
+
+RegisterNetEvent('sz-pizzajob:server:notify', function(data)
+    QBCore.Functions.Notify(data.src, data.text, data.type, data.length)
+end)
+
 -- Useable Items
 QBCore.Functions.CreateUseableItem('pizzabox', function(source, item)
     local src = source
