@@ -22,6 +22,31 @@ BeginTextCommandSetBlipName('STRING')
 AddTextComponentString('PizzaThis')
 EndTextCommandSetBlipName(blip)
 
+-- I know this being here isn't necessary but I remove it and it causes errors. I look more into this soon
+function QBCore.Functions.Progressbar(name, label, duration, useWhileDead, canCancel, disableControls, animation, prop, propTwo, onFinish, onCancel)
+    exports['progressbar']:Progress({
+        name = label:lower(),
+        duration = duration,
+        label = label,
+        useWhileDead = useWhileDead,
+        canCancel = canCancel,
+        controlDisables = disableControls,
+        animation = animation,
+        prop = prop,
+        propTwo = propTwo,
+    }, function(cancelled)
+        if not cancelled then
+            if onFinish then
+                onFinish()
+            end
+        else
+            if onCancel then
+                onCancel()
+            end
+        end
+    end)
+end
+
 local function paymentMenu()
     local dialog = exports['qb-input']:ShowInput({
         header = 'Create Reciept',
@@ -996,7 +1021,7 @@ RegisterNetEvent('sz-pizzajob:client:boxpizzamenu', function(args)
 end)
 
 RegisterNetEvent('sz-pizzajob:client:boxpizza', function(args)
-    QBCore.Functions.Progressbar(args.returnItem, 'Collecting Pizza Box ', 5000, false, true, {
+    QBCore.Functions.Progressbar(args.returnItem, 'Collecting Pizza Box', 5000, false, true, {
         TriggerEvent('animations:client:EmoteCommandStart', {'inspect'}),
         disableMovement = true,
         disableMouse = false, 
